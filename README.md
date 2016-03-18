@@ -254,6 +254,7 @@ public class UserCursor extends CursorWrapper {
 
 <h3> Add these methods in Database class to read an object or get a list of the objects in the Database </h3>
 ```java
+public class Database {
   private UserCursor query(String whereClause,String whereArgs[]) {
   
         Cursor cursor = sqLiteDatabase.query(
@@ -299,6 +300,7 @@ public class UserCursor extends CursorWrapper {
         }
         return users;
     }
+}
 }
 
 ```
