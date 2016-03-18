@@ -169,15 +169,18 @@ public class Database {
 
  private ContentValues getValues(User user) {
         ContentValues values = new ContentValues();
+        
         values.put(USER.COLS.UUID, user.getUuid().toString() );
         values.put(USER.COLS.NAME, user.getName() );
         values.put(USER.COLS.AGE, user.getAge() );
         values.put(USER.COLS.isMARRIED, user.isMarried() ? 1 : 0 );
+        
         return values;
     }
 
     public void addUser(User user) {
         ContentValues values = getValues(user);
+        
         try{
             sqLiteDatabase.insert(USER.NAME, null, values);
         }
@@ -189,6 +192,7 @@ public class Database {
 
     public void removeUser(User user) {
         String uuid = user.getUuid().toString();
+        
         try {
             sqLiteDatabase.delete(USER.NAME, USER.COLS.UUID + " = ?", new String[]{ uuid });
         }
@@ -200,6 +204,7 @@ public class Database {
     public void updateUser(User user) {
         String uuid = user.getUuid().toString();
         ContentValues values = getValues(user);
+        
         try{
             sqLiteDatabase.update(USER.NAME, values, USER.COLS.UUID + " = ?", new String[]{ uuid });
         }
@@ -250,6 +255,7 @@ public class UserCursor extends CursorWrapper {
 <h3> Add these methods in Database class to read an object or get a list of the objects in the Database </h3>
 ```java
   private UserCursor query(String whereClause,String whereArgs[]) {
+  
         Cursor cursor = sqLiteDatabase.query(
                 USER.NAME,
                 null,
@@ -264,6 +270,7 @@ public class UserCursor extends CursorWrapper {
 
     public User getUser(UUID uuid) {
         UserCursor userCursor = query(USER.COLS.UUID+" = ?",new String[]{ uuid.toString()} );
+        
         try {
             if(userCursor.getCount() == 0){
                 return null;
