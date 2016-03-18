@@ -98,7 +98,7 @@ public class DatabaseSchema {
 ```java
 public class Helper extends SQLiteOpenHelper {
 
-    public static final String NAME = "fsDb.db";
+    public static final String NAME = "myDatabase.db";
     public static final int VERSION = 1;
 
     public Helper(Context context) {
@@ -108,12 +108,13 @@ public class Helper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-        "create table "+ USER.NAME +"("
-        +"_id integer primary key autoincrement, "
-                + USER.COLS.UUID +", "
-                +USER.COLS.NAME+", "
-                +USER.COLS.AGE+", "
-                +USER.COLS.isMARRIED+")"
+        "create table " + USER.NAME + "("
+        + "_id integer primary key autoincrement, "
+        
+                +USER.COLS.UUID       +", "
+                +USER.COLS.NAME       +", "
+                +USER.COLS.AGE        +", "
+                +USER.COLS.isMARRIED  +")"
 
         );
     }
@@ -134,6 +135,7 @@ public class Helper extends SQLiteOpenHelper {
 
 ```java
 public class Database {
+
     public static final String DEBUG = "DEBUG";
     private static Database database;
     private Context context;
@@ -167,10 +169,10 @@ public class Database {
 
  private ContentValues getValues(User user) {
         ContentValues values = new ContentValues();
-        values.put(USER.COLS.UUID,user.getUuid().toString());
-        values.put(USER.COLS.NAME,user.getName());
-        values.put(USER.COLS.AGE,user.getAge());
-        values.put(USER.COLS.isMARRIED, user.isMarried() ? 1 : 0);
+        values.put(USER.COLS.UUID, user.getUuid().toString() );
+        values.put(USER.COLS.NAME, user.getName() );
+        values.put(USER.COLS.AGE, user.getAge() );
+        values.put(USER.COLS.isMARRIED, user.isMarried() ? 1 : 0 );
         return values;
     }
 
@@ -188,7 +190,7 @@ public class Database {
     public void removeUser(User user) {
         String uuid = user.getUuid().toString();
         try {
-            sqLiteDatabase.delete(USER.NAME, USER.COLS.UUID + " = ?", new String[]{uuid});
+            sqLiteDatabase.delete(USER.NAME, USER.COLS.UUID + " = ?", new String[]{ uuid });
         }
         catch(Exception e){
             Log.d(DEBUG,"operation to remove user failed");
@@ -199,7 +201,7 @@ public class Database {
         String uuid = user.getUuid().toString();
         ContentValues values = getValues(user);
         try{
-            sqLiteDatabase.update(USER.NAME, values, USER.COLS.UUID + " = ?", new String[]{uuid});
+            sqLiteDatabase.update(USER.NAME, values, USER.COLS.UUID + " = ?", new String[]{ uuid });
         }
         catch (Exception e){
             Log.d(DEBUG,"operation to update user failed");
@@ -224,9 +226,9 @@ public class UserCursor extends CursorWrapper {
     }
 
         public User getUser() {
-            String uuid = getString(getColumnIndex(USER.COLS.UUID));
-            String name = getString(getColumnIndex(USER.COLS.NAME));
-            int age = getInt(getColumnIndex(USER.COLS.AGE));
+            String uuid   = getString(getColumnIndex(USER.COLS.UUID));
+            String name   = getString(getColumnIndex(USER.COLS.NAME));
+            int age       = getInt(getColumnIndex(USER.COLS.AGE));
             int isMarried = getInt(getColumnIndex(USER.COLS.isMARRIED));
 
             User user = new User(UUID.fromString(uuid));
@@ -261,7 +263,7 @@ public class UserCursor extends CursorWrapper {
     }
 
     public User getUser(UUID uuid) {
-        UserCursor userCursor = query(USER.COLS.UUID+" = ?",new String[]{ uuid.toString()});
+        UserCursor userCursor = query(USER.COLS.UUID+" = ?",new String[]{ uuid.toString()} );
         try {
             if(userCursor.getCount() == 0){
                 return null;
